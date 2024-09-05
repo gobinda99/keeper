@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object SampleRetrofit {
+object Retrofit {
     @get:Synchronized
     var adapter: Retrofit? = null
         private set
@@ -51,7 +51,7 @@ object SampleRetrofit {
 
         adapter = Retrofit.Builder()
             .client(httpClient)
-            .baseUrl("http://www.helloworlad.com/")
+            .baseUrl("https://www.jsonkeeper.com/")
             .addConverterFactory(GsonConverterFactory.create(gson))
           /*  .addCallAdapterFactory(
                 RxJava2CallAdapterFactory

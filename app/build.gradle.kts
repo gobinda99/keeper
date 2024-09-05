@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    id ("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -69,10 +70,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation (libs.jakewharton.timber)
+
     // Hilt
-    implementation(libs.hilt.android)
+    //implementation(libs.hilt.android)
     implementation (libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+//    annotationProcessor(libs.hilt.android.compiler)
+//    kapt(libs.hilt.android.compiler)
+    implementation ("com.google.dagger:hilt-android:2.52")
+    kapt ("com.google.dagger:hilt-compiler:2.52")
 
     //Retrofit
     implementation (libs.retrofit)
