@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -176,6 +177,9 @@ fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked: (Pro
 
 @Composable
 fun SplitBannerProducts(products: List<Product>, onProductClicked: (Product) -> Unit) {
+    val size = remember {
+        if(products.size > 2) 2 else products.size
+    }
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
@@ -183,7 +187,7 @@ fun SplitBannerProducts(products: List<Product>, onProductClicked: (Product) -> 
             .height(240.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(products.size) { index ->
+        items(size, key = {products[it].hashCode()}) { index ->
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onProductClicked.invoke(products[index]) }) {
