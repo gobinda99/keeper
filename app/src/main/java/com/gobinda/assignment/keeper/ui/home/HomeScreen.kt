@@ -1,5 +1,6 @@
 package com.gobinda.assignment.keeper.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,11 +42,12 @@ import com.gobinda.assignment.keeper.ui.component.TitleTopBar
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onProductClicked : (Product) -> Unit
 ) {
     val sectionLazyPagingItems = viewModel.sections.collectAsLazyPagingItems()
 
-    HomeContent(modifier, sectionLazyPagingItems) {
+    HomeContent(modifier, sectionLazyPagingItems, onProductClicked) {
         viewModel.onRetry()
     }
 }
@@ -55,7 +56,9 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    sectionLazyPagingItems: LazyPagingItems<Section>, retry: () -> Unit
+    sectionLazyPagingItems: LazyPagingItems<Section>,
+    onProductClicked : (Product) -> Unit,
+    retry: () -> Unit
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -74,11 +77,11 @@ private fun HomeContent(
                         SectionType.BANNER -> BannerProduct(products)
                         SectionType.HORIZONTAL_FREE_SCROLL ->
                             HorizontalFreeScrollProducts(
-                                products
+                                products, onProductClicked
                             )
 
                         SectionType.SPLIT_BANNER -> {
-                            SplitBannerProducts(products)
+                            SplitBannerProducts(products, onProductClicked)
                         }
 
                         null -> {}
@@ -141,13 +144,16 @@ fun BannerProduct(products: List<Product>) {
 
 
 @Composable
-fun HorizontalFreeScrollProducts(products: List<Product>) {
+fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked : (Product) -> Unit) {
     LazyRow(
         modifier = Modifier.padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products.size) { index ->
-            Column(modifier = Modifier.width(124.dp)) {
+            Column(modifier = Modifier.width(124.dp)
+                .clickable {
+                onProductClicked.invoke(products[index])
+            }) {
 
                 AsyncImage(
                     model = products[index].image ?: "-",
@@ -171,7 +177,7 @@ fun HorizontalFreeScrollProducts(products: List<Product>) {
 }
 
 @Composable
-fun SplitBannerProducts(products: List<Product>) {
+fun SplitBannerProducts(products: List<Product>, onProductClicked : (Product) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
@@ -180,7 +186,8 @@ fun SplitBannerProducts(products: List<Product>) {
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(products.size) { index ->
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.fillMaxWidth()
+                .clickable { onProductClicked.invoke(products[index]) }) {
 
                 AsyncImage(
                     model = products[index].image,
