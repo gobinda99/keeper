@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PagingViewModel @Inject constructor(
-    private val dogsPagingSource: ProductsPagingSource,
+class HomeViewModel @Inject constructor(
+    private val productsPagingSource: ProductsPagingSource,
 ) : ViewModel() {
 
-    private val _pagingResponse: MutableStateFlow<PagingData<Section>> =
+    private val _sections: MutableStateFlow<PagingData<Section>> =
         MutableStateFlow(PagingData.empty())
-    var pagingResponse = _pagingResponse.asStateFlow()
+    var sections = _sections.asStateFlow()
         private set
 
     init {
@@ -30,9 +30,9 @@ class PagingViewModel @Inject constructor(
                     10, enablePlaceholders = true
                 )
             ) {
-                dogsPagingSource
+                productsPagingSource
             }.flow.cachedIn(viewModelScope).collect {
-                _pagingResponse.value = it
+                _sections.value = it
             }
         }
     }
