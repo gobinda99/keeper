@@ -4,11 +4,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
 import com.gobinda.assignment.keeper.domain.model.Section
-import com.gobinda.assignment.keeper.domain.usecase.GetProductsUseCase
+import com.gobinda.assignment.keeper.domain.usecase.GetSecProductsUseCase
 import javax.inject.Inject
 
-class ProductsPagingSource @Inject constructor(
-    private val getProductsUseCase : GetProductsUseCase
+class SecProductsPagingSource @Inject constructor(
+    private val getSecProductsUseCase : GetSecProductsUseCase
 ) : PagingSource<Int, Section>() {
 
     override fun getRefreshKey(state: PagingState<Int, Section>): Int? = state.anchorPosition
@@ -19,7 +19,7 @@ class ProductsPagingSource @Inject constructor(
         var response = emptyList<Section>()
         return try {
             if (page == 1) {
-                response = getProductsUseCase()
+                response = getSecProductsUseCase()
             }
             LoadResult.Page(
                 data = response,
@@ -27,9 +27,7 @@ class ProductsPagingSource @Inject constructor(
                 nextKey = if (response.isEmpty()) null else page.plus(1)
             )
         } catch (e: Exception) {
-            LoadResult.Error(
-                e
-            )
+            LoadResult.Error(e)
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.gobinda.assignment.keeper.data.domain_impl.ProductsPagingSource
+import com.gobinda.assignment.keeper.data.domain_impl.SecProductsPagingSource
 import com.gobinda.assignment.keeper.domain.model.Section
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val productsPagingSource: ProductsPagingSource,
+    private val secProductsPagingSource: SecProductsPagingSource,
 ) : ViewModel() {
 
-    private val _sections: MutableStateFlow<PagingData<Section>> =
+    private val _secProducts: MutableStateFlow<PagingData<Section>> =
         MutableStateFlow(PagingData.empty())
-    var sections = _sections.asStateFlow()
+    var secProducts = _secProducts.asStateFlow()
         private set
 
     init {
@@ -38,9 +38,9 @@ class HomeViewModel @Inject constructor(
                     10, enablePlaceholders = true
                 )
             ) {
-                productsPagingSource
+                secProductsPagingSource
             }.flow.cachedIn(viewModelScope).collect {
-                _sections.value = it
+                _secProducts.value = it
             }
         }
     }

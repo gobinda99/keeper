@@ -45,7 +45,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onProductClicked: (Product) -> Unit
 ) {
-    val sectionLazyPagingItems = viewModel.sections.collectAsLazyPagingItems()
+    val sectionLazyPagingItems = viewModel.secProducts.collectAsLazyPagingItems()
 
     HomeContent(modifier, sectionLazyPagingItems, onProductClicked) {
         viewModel.onRetry()
@@ -103,9 +103,6 @@ private fun HomeContent(
                     )
                 }
 
-                loadState.refresh is LoadState.NotLoading -> {
-
-                }
             }
         }
     }

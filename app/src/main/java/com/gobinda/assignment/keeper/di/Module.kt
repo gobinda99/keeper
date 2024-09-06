@@ -2,8 +2,8 @@ package com.gobinda.assignment.keeper.di
 
 import com.gobinda.assignment.keeper.data.api.RestApi
 import com.gobinda.assignment.keeper.data.api.Retrofit
-import com.gobinda.assignment.keeper.data.domain_impl.GetProductsUseCaseImpl
-import com.gobinda.assignment.keeper.domain.usecase.GetProductsUseCase
+import com.gobinda.assignment.keeper.data.domain_impl.GetSecProductsUseCaseImpl
+import com.gobinda.assignment.keeper.domain.usecase.GetSecProductsUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,7 +28,7 @@ class DataModule {
 abstract class DataModuleViewModelComponent {
 
     @Binds
-    abstract fun bindsGetProducts(products: GetProductsUseCaseImpl): GetProductsUseCase
+    abstract fun bindsSecGetProducts(products: GetSecProductsUseCaseImpl): GetSecProductsUseCase
 
 }
 
