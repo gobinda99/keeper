@@ -13,7 +13,11 @@ fun TitleTopBar(
         title = {
             Text(text = title, style = MaterialTheme.typography.titleLarge)
         },
-        colors = TopAppBarDefaults.mediumTopAppBarColors()
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+
     )
 }
 
