@@ -17,11 +17,10 @@ class ProductsPagingSource @Inject constructor(
         val page = params.key ?: 1
      /* val response = repository.getProducts(page, params.loadSize)*/
         var response = emptyList<Section>()
-        if (page == 1) {
-             response = getProductsUseCase()
-        }
         return try {
-
+            if (page == 1) {
+                response = getProductsUseCase()
+            }
             LoadResult.Page(
                 data = response,
                 prevKey = if (page == 1) null else page.minus(1),
