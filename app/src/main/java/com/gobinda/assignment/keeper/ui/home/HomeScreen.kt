@@ -58,7 +58,7 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    sectionLazyPagingItems: LazyPagingItems<Section>,
+    secLazyPagingItems: LazyPagingItems<Section>,
     onProductClicked: (Product) -> Unit,
     retry: () -> Unit
 ) {
@@ -72,25 +72,23 @@ private fun HomeContent(
                 .fillMaxSize()
         ) {
 
-            items(sectionLazyPagingItems.itemCount) {
-                sectionLazyPagingItems[it]?.apply {
+            items(secLazyPagingItems.itemCount, key = {secLazyPagingItems[it].hashCode()}) {
+                secLazyPagingItems[it]?.apply {
                     when (sectionType) {
                         SectionType.BANNER -> BannerProduct(products)
                         SectionType.HORIZONTAL_FREE_SCROLL -> HorizontalFreeScrollProducts(
                             products, onProductClicked
                         )
-
                         SectionType.SPLIT_BANNER -> {
                             SplitBannerProducts(products, onProductClicked)
                         }
-
-                        null -> {}
+                        else -> {}
                     }
                 }
 
             }
         }
-        sectionLazyPagingItems.apply {
+        secLazyPagingItems.apply {
             when {
                 loadState.refresh is LoadState.Loading
                         || loadState.append is LoadState.Loading -> {
@@ -146,7 +144,7 @@ fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked: (Pro
         modifier = Modifier.padding(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(products.size) { index ->
+        items(products.size, key = {products[it].hashCode()}) { index ->
             Column(modifier = Modifier
                 .width(124.dp)
                 .clickable {
