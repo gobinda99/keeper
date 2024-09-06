@@ -4,5 +4,6 @@
     <string name="retry">Retry</string>
     <string name="error_message">Something went wrong. Please try again.</string>
     <string name="home">Home</string>
+    <string name="loading">Loading…</string>
 
 </resources>

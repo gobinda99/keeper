@@ -31,6 +31,7 @@ import com.gobinda.assignment.keeper.domain.model.Product
 import com.gobinda.assignment.keeper.domain.model.Section
 import com.gobinda.assignment.keeper.domain.model.SectionType
 import com.gobinda.assignment.keeper.ui.component.ErrorView
+import com.gobinda.assignment.keeper.ui.component.LoadingView
 import com.gobinda.assignment.keeper.ui.component.TitleTopBar
 
 @Composable
@@ -49,16 +50,18 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    sectionLazyPagingItems: LazyPagingItems<Section> , retry : ()-> Unit
+    sectionLazyPagingItems: LazyPagingItems<Section>, retry: () -> Unit
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             TitleTopBar(title = stringResource(id = R.string.home))
         }) { innerPadding ->
 
-        LazyColumn(modifier = modifier
-            .padding(innerPadding)
-            .fillMaxSize()) {
+        LazyColumn(
+            modifier = modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
 
             items(sectionLazyPagingItems.itemCount) {
                 sectionLazyPagingItems[it]?.apply {
@@ -81,22 +84,14 @@ private fun HomeContent(
         sectionLazyPagingItems.apply {
             when {
                 loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-
-                    Column(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-
+                    LoadingView()
                 }
 
                 loadState.refresh is LoadState.Error || loadState.append is LoadState.Error -> {
-                    ErrorView(message = stringResource(id = R.string.error_message), onRetry = retry )
-
+                    ErrorView(
+                        message = stringResource(id = R.string.error_message),
+                        onRetry = retry
+                    )
                 }
 
                 loadState.refresh is LoadState.NotLoading -> {
@@ -112,31 +107,32 @@ private fun HomeContent(
 
 @Composable
 fun BannerProduct(products: List<Product>) {
-        AsyncImage(
-            model = products.firstOrNull()?.image ,
-            contentDescription = "",
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(size = 240.dp)
-        )
+    AsyncImage(
+        model = products.firstOrNull()?.image,
+        contentDescription = "",
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
+            .size(size = 240.dp)
+    )
 }
 
 @Composable
 fun HorizontalFreeScrollProducts(products: List<Product>) {
     LazyRow() {
         items(products.size) {
-           Column(modifier = Modifier.width(124.dp)) {
-               AsyncImage(
-                   model = products[it].image ?: "-",
-                   contentDescription = "",
-                   contentScale = ContentScale.FillBounds,
-                   modifier = Modifier.size(size = 124.dp)
-               )
-               Text(text = products[it].title ?: "",
-                   modifier = Modifier.padding(5.dp)
-                   , maxLines = 1)
-           }
+            Column(modifier = Modifier.width(124.dp)) {
+                AsyncImage(
+                    model = products[it].image ?: "-",
+                    contentDescription = "",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.size(size = 124.dp)
+                )
+                Text(
+                    text = products[it].title ?: "",
+                    modifier = Modifier.padding(5.dp), maxLines = 1
+                )
+            }
 
         }
     }
