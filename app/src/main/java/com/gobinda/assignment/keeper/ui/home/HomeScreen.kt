@@ -1,4 +1,4 @@
-package com.gobinda.assignment.keeper.ui.pagination
+package com.gobinda.assignment.keeper.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,20 +13,25 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.gobinda.assignment.keeper.R
 import com.gobinda.assignment.keeper.domain.model.Product
 import com.gobinda.assignment.keeper.domain.model.Section
 import com.gobinda.assignment.keeper.domain.model.SectionType
+import com.gobinda.assignment.keeper.ui.component.ErrorView
+import com.gobinda.assignment.keeper.ui.component.TitleTopBar
 
 @Composable
 fun HomeScreen(
@@ -35,65 +40,78 @@ fun HomeScreen(
 ) {
     val sectionLazyPagingItems = viewModel.sections.collectAsLazyPagingItems()
 
-    HomeContent(modifier, sectionLazyPagingItems)
+    HomeContent(modifier, sectionLazyPagingItems) {
+        viewModel.onRetry()
+    }
 }
 
 
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    sectionLazyPagingItems: LazyPagingItems<Section>
+    sectionLazyPagingItems: LazyPagingItems<Section> , retry : ()-> Unit
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        items(sectionLazyPagingItems.itemCount) {
-            sectionLazyPagingItems[it]?.apply {
-                when (sectionType) {
-                    SectionType.BANNER -> Banner(products)
-                    SectionType.HORIZONTAL_FREE_SCROLL -> Horizontal(
-                        products
-                    )
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TitleTopBar(title = stringResource(id = R.string.home))
+        }) { innerPadding ->
 
-                    SectionType.SPLIT_BANNER -> {
-                        SplitBanner(products)
+        LazyColumn(modifier = modifier
+            .padding(innerPadding)
+            .fillMaxSize()) {
+
+            items(sectionLazyPagingItems.itemCount) {
+                sectionLazyPagingItems[it]?.apply {
+                    when (sectionType) {
+                        SectionType.BANNER -> BannerProduct(products)
+                        SectionType.HORIZONTAL_FREE_SCROLL -> HorizontalFreeScrollProducts(
+                            products
+                        )
+
+                        SectionType.SPLIT_BANNER -> {
+                            SplitBannerProducts(products)
+                        }
+
+                        null -> {}
+                    }
+                }
+
+            }
+        }
+        sectionLazyPagingItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
                     }
 
-                    null -> {}
+                }
+
+                loadState.refresh is LoadState.Error || loadState.append is LoadState.Error -> {
+                    ErrorView(message = stringResource(id = R.string.error_message), onRetry = retry )
+
+                }
+
+                loadState.refresh is LoadState.NotLoading -> {
+
                 }
             }
-
-
         }
     }
 
 
-    sectionLazyPagingItems.apply {
-        when {
-            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator()
-                }
-
-            }
-
-            loadState.refresh is LoadState.Error || loadState.append is LoadState.Error -> {
-                Text(text = "Error")
-            }
-
-            loadState.refresh is LoadState.NotLoading -> {
-
-            }
-        }
-    }
 }
 
 
 @Composable
-fun Banner(products: List<Product>) {
+fun BannerProduct(products: List<Product>) {
         AsyncImage(
             model = products.firstOrNull()?.image ,
             contentDescription = "",
@@ -105,7 +123,7 @@ fun Banner(products: List<Product>) {
 }
 
 @Composable
-fun Horizontal(products: List<Product>) {
+fun HorizontalFreeScrollProducts(products: List<Product>) {
     LazyRow() {
         items(products.size) {
            Column(modifier = Modifier.width(124.dp)) {
@@ -125,8 +143,9 @@ fun Horizontal(products: List<Product>) {
 
 }
 
+
 @Composable
-fun SplitBanner(products: List<Product>) {
+fun SplitBannerProducts(products: List<Product>) {
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.height(240.dp)) {
         items(products.size) {
             AsyncImage(

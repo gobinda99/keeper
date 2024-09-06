@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface RestApi {
 
     @GET("/b/5BEJ")
-    suspend fun getProducts(/*@Path("period") period: Int, @Query("api-key") key : String*/): List<Section>
+    suspend fun getSectionsProducts(/*@Path("period") period: Int, @Query("api-key") key : String*/): List<Section>
 }

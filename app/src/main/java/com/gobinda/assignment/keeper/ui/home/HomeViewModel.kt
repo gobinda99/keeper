@@ -1,4 +1,4 @@
-package com.gobinda.assignment.keeper.ui.pagination
+package com.gobinda.assignment.keeper.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -24,6 +24,14 @@ class HomeViewModel @Inject constructor(
         private set
 
     init {
+        fetchSections()
+    }
+
+    fun onRetry(){
+        fetchSections()
+    }
+
+    private fun fetchSections() {
         viewModelScope.launch {
             Pager(
                 config = PagingConfig(
