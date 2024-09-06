@@ -43,7 +43,7 @@ import com.gobinda.assignment.keeper.ui.component.TitleTopBar
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    onProductClicked : (Product) -> Unit
+    onProductClicked: (Product) -> Unit
 ) {
     val sectionLazyPagingItems = viewModel.sections.collectAsLazyPagingItems()
 
@@ -57,13 +57,12 @@ fun HomeScreen(
 private fun HomeContent(
     modifier: Modifier,
     sectionLazyPagingItems: LazyPagingItems<Section>,
-    onProductClicked : (Product) -> Unit,
+    onProductClicked: (Product) -> Unit,
     retry: () -> Unit
 ) {
-    Scaffold(modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TitleTopBar(title = stringResource(id = R.string.home))
-        }) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+        TitleTopBar(title = stringResource(id = R.string.home))
+    }) { innerPadding ->
 
         LazyColumn(
             modifier = modifier
@@ -75,10 +74,9 @@ private fun HomeContent(
                 sectionLazyPagingItems[it]?.apply {
                     when (sectionType) {
                         SectionType.BANNER -> BannerProduct(products)
-                        SectionType.HORIZONTAL_FREE_SCROLL ->
-                            HorizontalFreeScrollProducts(
-                                products, onProductClicked
-                            )
+                        SectionType.HORIZONTAL_FREE_SCROLL -> HorizontalFreeScrollProducts(
+                            products, onProductClicked
+                        )
 
                         SectionType.SPLIT_BANNER -> {
                             SplitBannerProducts(products, onProductClicked)
@@ -144,16 +142,17 @@ fun BannerProduct(products: List<Product>) {
 
 
 @Composable
-fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked : (Product) -> Unit) {
+fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked: (Product) -> Unit) {
     LazyRow(
         modifier = Modifier.padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products.size) { index ->
-            Column(modifier = Modifier.width(124.dp)
+            Column(modifier = Modifier
+                .width(124.dp)
                 .clickable {
-                onProductClicked.invoke(products[index])
-            }) {
+                    onProductClicked.invoke(products[index])
+                }) {
 
                 AsyncImage(
                     model = products[index].image ?: "-",
@@ -177,7 +176,7 @@ fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked : (Pr
 }
 
 @Composable
-fun SplitBannerProducts(products: List<Product>, onProductClicked : (Product) -> Unit) {
+fun SplitBannerProducts(products: List<Product>, onProductClicked: (Product) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
@@ -186,7 +185,8 @@ fun SplitBannerProducts(products: List<Product>, onProductClicked : (Product) ->
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(products.size) { index ->
-            Box(modifier = Modifier.fillMaxWidth()
+            Box(modifier = Modifier
+                .fillMaxWidth()
                 .clickable { onProductClicked.invoke(products[index]) }) {
 
                 AsyncImage(
