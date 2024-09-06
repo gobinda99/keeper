@@ -1,12 +1,8 @@
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.gobinda.assignment.keeper.MainActivity
-import com.gobinda.assignment.keeper.ui.home.HomeScreen
-import com.gobinda.assignment.keeper.ui.theme.AppTheme
 import org.junit.Rule
 import org.junit.Test
 
@@ -38,7 +34,4 @@ class HomeScreenTest {
         }
     }
 
-    fun test_retry(){
-
-    }
 }

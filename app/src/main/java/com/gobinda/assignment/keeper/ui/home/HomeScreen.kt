@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -121,7 +122,7 @@ fun BannerProduct(products: List<Product>) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(240.dp)
-                .padding(bottom = 20.dp)
+                .padding(bottom = 24.dp)
         )
 
         Text(
@@ -141,7 +142,7 @@ fun BannerProduct(products: List<Product>) {
 @Composable
 fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked: (Product) -> Unit) {
     LazyRow(
-        modifier = Modifier.padding(bottom = 20.dp),
+        modifier = Modifier.padding(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products.size) { index ->
@@ -162,6 +163,7 @@ fun HorizontalFreeScrollProducts(products: List<Product>, onProductClicked: (Pro
 
                 Text(
                     text = products[index].title ?: "",
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 8.dp),
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
@@ -177,7 +179,7 @@ fun SplitBannerProducts(products: List<Product>, onProductClicked: (Product) -> 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
-            .padding(bottom = 20.dp)
+            .padding(bottom = 24.dp)
             .height(240.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
