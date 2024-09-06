@@ -22,7 +22,6 @@ fun ErrorView(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Error Message
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
@@ -31,7 +30,6 @@ fun ErrorView(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Retry Button
         Button(onClick = onRetry) {
             Text(text = stringResource(id = R.string.retry))
         }
@@ -43,6 +41,6 @@ fun ErrorView(
 fun ErrorViewPreview() {
     ErrorView(
         message = stringResource(id = R.string.error_message),
-        onRetry = {  }
+        onRetry = { }
     )
 }

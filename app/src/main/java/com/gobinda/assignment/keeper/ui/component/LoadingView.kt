@@ -18,12 +18,10 @@ fun LoadingView() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Loading spinner
         CircularProgressIndicator()
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Loading text
         Text(text = stringResource(id = R.string.loading), style = MaterialTheme.typography.bodyLarge)
     }
 }
