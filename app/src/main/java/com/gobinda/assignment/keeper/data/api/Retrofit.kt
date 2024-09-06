@@ -1,5 +1,6 @@
 package com.gobinda.assignment.keeper.data.api
 
+import com.gobinda.assignment.keeper.BuildConfig
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -15,7 +16,7 @@ object Retrofit {
 
     val api: RestApi
         @Synchronized get() {
-            if(adapter == null) {
+            if (adapter == null) {
                 initRestAdapter()
             }
             return adapter!!.create(RestApi::class.java)
@@ -26,8 +27,8 @@ object Retrofit {
     private fun initRestAdapter() {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level =
-            /// need to make change on build confit
-            if (true) HttpLoggingInterceptor.Level.BODY
+                /// need to make change on build confit
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE
         // use OkHttp client
         val httpClient = OkHttpClient.Builder()
@@ -48,18 +49,13 @@ object Retrofit {
         val gson = GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create()
-
+        BuildConfig.BASE_URL
         adapter = Retrofit.Builder()
             .client(httpClient)
-            .baseUrl("https://www.jsonkeeper.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
-          /*  .addCallAdapterFactory(
-                RxJava2CallAdapterFactory
-                    .createWithScheduler(Schedulers.io())
-            )*/
             .build()
     }
-
 
 
 }
