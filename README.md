@@ -23,7 +23,12 @@ Keeper is a Sample Android App with the following below tech:
 <br>
 <img src="screenshots/Screenshot_20240907_074943.png" width="250"/> &nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/Screenshot_20240907_074405.png" width="250"/> &nbsp;&nbsp;&nbsp;&nbsp;
-<img src="screenshots/Screenshot_20240907_074505.png" width="250"/> <br>
+<img src="screenshots/Screenshot_20240907_074505.png" width="250"/> 
+</p>
+
+<br>
+
+<p>
 <img src="screenshots/Screenshot_20240907_074541.png" width="250"/> &nbsp;&nbsp;&nbsp;&nbsp;
 <img src="screenshots/Screenshot_20240907_074959.png" width="250"/> 
 </p>
