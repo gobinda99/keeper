@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.Keeper" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Keeper" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/md_theme_primary</item>
+        <item name="android:colorBackground">@color/md_theme_background</item>
+    </style>
 </resources>
